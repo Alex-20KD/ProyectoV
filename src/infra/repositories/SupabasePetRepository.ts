@@ -6,7 +6,12 @@ export class SupabasePetRepository implements IPetRepository {
   async listPets(): Promise<Pet[]> {
     const { data, error } = await supabase.from('pets').select('*')
     if (error) throw error
-    return (data ?? []) as Pet[]
+
+    return (data ?? []).map((pet) => ({
+      ...pet,
+      imageUrl: supabase.storage.from('imagenes-publicas').getPublicUrl(pet.image_url).data
+        .publicUrl,
+    })) as Pet[]
   }
 
   async getPet(id: string): Promise<Pet | null> {
@@ -22,7 +27,10 @@ export class SupabasePetRepository implements IPetRepository {
   }
 
   async adoptPet(petId: string, userId: string): Promise<boolean> {
-    const { error } = await supabase.from('pets').update({ adopted: true, owner_id: userId }).eq('id', petId)
+    const { error } = await supabase
+      .from('pets')
+      .update({ adopted: true, owner_id: userId })
+      .eq('id', petId)
     return !error
   }
 }

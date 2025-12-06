@@ -48,7 +48,7 @@ onMounted(loadPets)
 
 <style scoped>
 .hero {
-  background-image: url('https://images.pexels.com/photos/1076758/pexels-photo-1076758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-image: url('https://i.imgur.com/s2p3mGz.jpeg');
   background-size: cover;
   background-position: center;
   padding: 4rem 2rem;
