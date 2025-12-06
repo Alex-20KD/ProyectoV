@@ -5,6 +5,11 @@ import { container } from '../di/container'
 
 const email = ref('')
 const password = ref('')
+const firstName = ref('')
+const lastName = ref('')
+const phoneNumber = ref('')
+const address = ref('')
+
 const error = ref('')
 const loading = ref(false)
 const router = useRouter()
@@ -13,9 +18,15 @@ async function handleRegister() {
   loading.value = true
   error.value = ''
   try {
-    await container.registerUserUseCase.execute(email.value, password.value)
-    // Auto login or redirect to login? Let's redirect to login for now or pets if auto-logged in (Supabase usually auto-logs in)
-    // But let's just go to pets
+    await container.registerUserUseCase.execute({
+      email: email.value,
+      password: password.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      phoneNumber: phoneNumber.value,
+      address: address.value,
+      role: 'Adopter' // Por defecto
+    })
     router.push('/pets')
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -34,6 +45,16 @@ async function handleRegister() {
     <h1>Registro</h1>
     <form @submit.prevent="handleRegister">
       <div class="form-group">
+        <label for="firstName">Nombre</label>
+        <input id="firstName" v-model="firstName" type="text" required />
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Apellido</label>
+        <input id="lastName" v-model="lastName" type="text" required />
+      </div>
+
+      <div class="form-group">
         <label for="email">Email</label>
         <input id="email" v-model="email" type="email" required />
       </div>
@@ -41,6 +62,16 @@ async function handleRegister() {
       <div class="form-group">
         <label for="password">Contraseña</label>
         <input id="password" v-model="password" type="password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Teléfono</label>
+        <input id="phone" v-model="phoneNumber" type="tel" required />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Dirección</label>
+        <input id="address" v-model="address" type="text" required />
       </div>
 
       <div v-if="error" class="error">{{ error }}</div>
@@ -52,6 +83,7 @@ async function handleRegister() {
     <p>¿Ya tienes cuenta? <router-link to="/login">Inicia sesión aquí</router-link></p>
   </div>
 </template>
+
 
 <style scoped>
 .auth-container {
