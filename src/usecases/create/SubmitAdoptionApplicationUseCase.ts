@@ -1,5 +1,5 @@
 // Importa las entidades y repositorios necesarios
-import { AdoptionApplication } from '../domain/entities/AdoptionApplication';
+import { AdoptionApplication, ApplicationStatus} from '../domain/entities/AdoptionApplication';
 import { IAdoptionApplicationRepository } from '../domain/repositories/IAdoptionApplicationRepository';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
 import { IPetRepository } from '../domain/repositories/IPetRepository';
